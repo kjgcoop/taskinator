@@ -37,8 +37,6 @@ class ApiAuthController extends Controller
     }
 
     public function login(){
-        echo 'E-mail: '.request('email');
-        echo 'Password: '.request('password');
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user  = Auth::user();
             $token = $user->createToken($this->appName)->accessToken;
