@@ -25,11 +25,10 @@ class TaskinatorApi extends Controller
             $boards = false;
         }
 
-
         if ($boards){
             return response()->json(new TaskinatorApiResult($boards, false));
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+//            return response()->json(['error' => 'Unauthorised'], 401);
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
     }

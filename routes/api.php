@@ -22,8 +22,7 @@ Route::prefix('v1')->group(function(){
     Route::match(['get', 'post'], '/register', 'ApiAuthController@register');
 
     Route::middleware('auth:api')->get('/show-boards', 'TaskinatorApi@showBoards')->name('showBoards');
-
-//    Route::get('show-boards',  'TaskinatorApi@showBoards');
+//    Route::match([ 'get', 'post' ], 'show-boards',  'TaskinatorApi@showBoards');
 
 
 

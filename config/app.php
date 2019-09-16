@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        // https://www.tutsmake.com/create-rest-api-using-passport-laravel-5-8-authentication/
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*
