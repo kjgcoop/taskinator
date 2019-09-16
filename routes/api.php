@@ -21,24 +21,15 @@ Route::prefix('v1')->group(function(){
     Route::match(['get', 'post'], '/login', 'ApiAuthController@login');
     Route::match(['get', 'post'], '/register', 'ApiAuthController@register');
 
-//    Route::any('login',    'ApiAuthController@login');
-//    Route::post('login',    'ApiAuthController@login');
-//    Route::get('login',    'ApiAuthController@login');
-
-
-    Route::post('register', 'ApiAuthController@register');
-    Route::get('register',  'ApiAuthController@register');
+    Route::middleware('auth:api')->get('/show-boards', 'TaskinatorApi@showBoards')->name('showBoards');
 
 //    Route::get('show-boards',  'TaskinatorApi@showBoards');
 
+
+
+
 //    Route::group(['middleware' => 'auth:api'], function(){
-        Route::match(['get','post'], 'show-boards', 'TaskinatorApi@showBoards');
+//        Route::match(['get','post'], 'show-boards', 'TaskinatorApi@showBoards');
 //    });
 });
 
-
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-*/

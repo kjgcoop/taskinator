@@ -32,22 +32,19 @@ class ApiAuthController extends Controller
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
 
-     //   $success['token'] =  $user->createToken('AppName')->accessToken;
         $token = $user->createToken($this->appName)->accessToken;
-    //        return response()->json(['data'=>$success, 'errors' => false], $this->successStatus);
-            return response()->json(new TaskinatorApiResult($token, false), $this->successStatus);
+        return response()->json(new TaskinatorApiResult($token, false), $this->successStatus);
     }
 
     public function login(){
+        echo 'E-mail: '.request('email');
+        echo 'Password: '.request('password');
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])){
-            $user = Auth::user();
-//            $success['token'] =  $user->createToken($this->appName)->accessToken;
+            $user  = Auth::user();
             $token = $user->createToken($this->appName)->accessToken;
-//            return response()->json(['data' => $success['token'], 'errors' => false], $this->successStatus);
-//            return response()->json(TaskinatorApiResult::formatResult($token, false), $this->successStatus);
+
             return response()->json(new TaskinatorApiResult($token, false), $this->successStatus);
         } else{
-//            return response()->json(['error' => 'Unauthorised'], 401);
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage), 401);
         }
     }
