@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\TaskinatorApi;
+use App\TaskinatorBoardApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +21,19 @@ Route::prefix('v1')->group(function(){
     Route::match(['get', 'post'], '/login', 'ApiAuthController@login');
     Route::match(['get', 'post'], '/register', 'ApiAuthController@register');
 
-    Route::middleware('auth:api')->get('/show-boards', 'TaskinatorApi@showBoards')->name('showBoards');
-//    Route::match([ 'get', 'post' ], 'show-boards',  'TaskinatorApi@showBoards');
+    // Boards
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-boards',  'TaskinatorBoardApi@showAll');
+
+    Route::middleware('auth:api')->match(['get', 'post'], '/create-board',  'TaskinatorBoardApi@create');   // C
+//    Route::middleware('auth:api')->match(['get', 'post'], '/show-board',  'TaskinatorBoardApi@show');     // R - Requires lists, tasks and tags.
+    Route::middleware('auth:api')->match(['get', 'post'], '/edit-board',  'TaskinatorBoardApi@edit');       // U
+    Route::middleware('auth:api')->match(['get', 'post'], '/archive-board',  'TaskinatorBoardApi@archive'); // D
+    Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-board',  'TaskinatorBoardApi@unarchive');
 
 
+    // Lists
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-lists',  'TaskinatorListApi@showAll');
 
 
-//    Route::group(['middleware' => 'auth:api'], function(){
-//        Route::match(['get','post'], 'show-boards', 'TaskinatorApi@showBoards');
-//    });
 });
 
