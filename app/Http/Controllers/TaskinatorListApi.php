@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Board;
+use App\TList;
 
-class TaskinatorBoardApi extends Controller
+class TaskinatorListApi extends Controller
 {
 
     public function archive(Request $request)
     {
-        echo "Will archive board.\n";
+        echo "Will archive list.\n";
 
-        $board = Board::find($request->id);
-        $board->archive();
+        $list = TList::find($request->id);
+        $list->archive();
 
-        $this->errorMessage = [ 'Unable to archive board '.$board->name.'.' ];
+        $this->errorMessage = [ 'Unable to archive list '.$list->name.'.' ];
 
-        if ($board->save())
+        if ($list->save())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -27,12 +27,14 @@ class TaskinatorBoardApi extends Controller
 
     public function create(Request $request)
     {
-        $this->errorMessage = [ 'Unable to create board '.$request->input('name').'.' ];
+        $this->errorMessage = [ 'Unable to create list '.$request->input('name').'.' ];
 
         $name = $request->name;
-        $newBoard = new Board();
+        $board_id = $request->board_id;
+        $sort = $request->sort;
+        $newList = new TList();
 
-        if ($newBoard->saveBoard($name))
+        if ($newList->saveTList($name, $board_id, $sort))
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -42,15 +44,15 @@ class TaskinatorBoardApi extends Controller
 
     public function edit(Request $request)
     {
-        echo "Will unarchive board.\n";
+        echo "Will edit list.\n";
 
-        $board = Board::find($request->id);
-        $oldName = $board->name;
-        $board->name = $request->name;
+        $list = TList::find($request->id);
+        $oldName = $list->name;
+        $list->name = $request->name;
 
-        $this->errorMessage = [ 'Unable to edit board '.$oldName.'.' ];
+        $this->errorMessage = [ 'Unable to edit list '.$oldName.'.' ];
 
-        if ($board->save())
+        if ($list->save())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -60,18 +62,18 @@ class TaskinatorBoardApi extends Controller
 
     public function showAll()
     {
-        $this->errorMessage = [ 'Unable to list boards.' ];
+        $this->errorMessage = [ 'Unable to list lists.' ];
 
         try
         {
-            $boards = Board::all();
+            $lists = TList::all();
         } catch (Exception $e) {
-            $boards = false;
+            $lists = false;
         }
 
-        if ($boards)
+        if ($lists)
         {
-            return response()->json(new TaskinatorApiResult($boards, false));
+            return response()->json(new TaskinatorApiResult($lists, false));
         } else {
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
@@ -80,14 +82,14 @@ class TaskinatorBoardApi extends Controller
 
     public function unarchive(Request $request)
     {
-        echo "Will unarchive board.\n";
+        echo "Will unarchive list.\n";
 
-        $board = Board::find($request->id);
-        $board->unarchive();
+        $list = TList::find($request->id);
+        $list->unarchive();
 
-        $this->errorMessage = [ 'Unable to restore board '.$board->name.'.' ];
+        $this->errorMessage = [ 'Unable to restore list '.$list->name.'.' ];
 
-        if ($board->save())
+        if ($list->save())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {

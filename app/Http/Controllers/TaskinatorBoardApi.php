@@ -10,8 +10,6 @@ class TaskinatorBoardApi extends Controller
 
     public function archive(Request $request)
     {
-        echo "Will archive board.\n";
-
         $board = Board::find($request->id);
         $board->archive();
 
@@ -42,8 +40,6 @@ class TaskinatorBoardApi extends Controller
 
     public function edit(Request $request)
     {
-        echo "Will unarchive board.\n";
-
         $board = Board::find($request->id);
         $oldName = $board->name;
         $board->name = $request->name;
@@ -80,8 +76,6 @@ class TaskinatorBoardApi extends Controller
 
     public function unarchive(Request $request)
     {
-        echo "Will unarchive board.\n";
-
         $board = Board::find($request->id);
         $board->unarchive();
 

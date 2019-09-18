@@ -14,7 +14,7 @@ class CreateTaskinatorTables extends Migration
     public function up()
     {
         $this->createBoardsTable();
-        $this->createListsTable();
+        $this->createTListsTable();
         $this->createTasksTable();
         $this->createColorsTable();
         $this->createTagsTable();
@@ -33,8 +33,8 @@ class CreateTaskinatorTables extends Migration
         });
     }
 
-    private function createListsTable() {
-        Schema::create('lists', function (Blueprint $table) {
+    private function createTListsTable() {
+        Schema::create('t_lists', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->string('name');
@@ -45,6 +45,7 @@ class CreateTaskinatorTables extends Migration
             $table->timestamps();
 
             $table->foreign('board_id')->references('id')->on('boards');
+            $table->index(['board_id', 'sort']);
         });
     }
 
@@ -59,7 +60,7 @@ class CreateTaskinatorTables extends Migration
             $table->boolean('archived')->default(0);
             $table->timestamps();
 
-            $table->foreign('list_id')->references('id')->on('lists')->nullable();
+            $table->foreign('list_id')->references('id')->on('t_lists')->nullable();
         });
     }
 
@@ -122,7 +123,7 @@ class CreateTaskinatorTables extends Migration
         Schema::dropIfExists('colors');
 
         Schema::dropIfExists('tasks');
-        Schema::dropIfExists('lists');
+        Schema::dropIfExists('t_lists');
         Schema::dropIfExists('boards');
     }
 }

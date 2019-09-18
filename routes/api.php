@@ -30,9 +30,10 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:api')->match(['get', 'post'], '/archive-board',  'TaskinatorBoardApi@archive'); // D
     Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-board',  'TaskinatorBoardApi@unarchive');
 
-
     // Lists
     Route::middleware('auth:api')->match(['get', 'post'], '/show-lists',  'TaskinatorListApi@showAll');
+
+    Route::middleware('auth:api')->match(['get', 'post'], '/create-list',  'TaskinatorListApi@create');       // U
 
 
 });

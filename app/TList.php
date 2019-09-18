@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Board extends Model
+class TList extends Model
 {
-    public function __construct() {
-    }
-
     public function archive() {
         $this->archived = 1;
         $this->save();
+    }
+
+    public function board() {
+        $this->hasOne('Board');
     }
 
     public function edit($name) {
@@ -19,12 +20,10 @@ class Board extends Model
         $this->save();
     }
 
-    public function lists() {
-        $this->hasMany('List');
-    }
-
-    public function saveBoard($name) {
+    public function saveTList($name, $board_id, $sort) {
         $this->name = $name;
+        $this->board_id = $board_id;
+        $this->sort = $sort;
         $this->save();
     }
 
