@@ -12,7 +12,6 @@ class TaskinatorApiResult extends Controller
     //
     public  function __construct($data, $errors) {
         $this->data   = $data;
-
         $this->errors = $errors;
     }
 }

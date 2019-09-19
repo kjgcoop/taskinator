@@ -11,11 +11,10 @@ class TaskinatorBoardApi extends Controller
     public function archive(Request $request)
     {
         $board = Board::find($request->id);
-        $board->archive();
 
         $this->errorMessage = [ 'Unable to archive board '.$board->name.'.' ];
 
-        if ($board->save())
+        if ($board->archive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -77,11 +76,10 @@ class TaskinatorBoardApi extends Controller
     public function unarchive(Request $request)
     {
         $board = Board::find($request->id);
-        $board->unarchive();
 
         $this->errorMessage = [ 'Unable to restore board '.$board->name.'.' ];
 
-        if ($board->save())
+        if ($board->unarchive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {

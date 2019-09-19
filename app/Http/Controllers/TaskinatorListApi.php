@@ -10,14 +10,11 @@ class TaskinatorListApi extends Controller
 
     public function archive(Request $request)
     {
-        echo "Will archive list.\n";
-
         $list = TList::find($request->id);
-        $list->archive();
 
         $this->errorMessage = [ 'Unable to archive list '.$list->name.'.' ];
 
-        if ($list->save())
+        if ($list->archive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -34,10 +31,14 @@ class TaskinatorListApi extends Controller
         $sort = $request->sort;
         $newList = new TList();
 
-        if ($newList->saveTList($name, $board_id, $sort))
-        {
-            return response()->json(new TaskinatorApiResult(true, false));
-        } else {
+        try {
+            if ($newList->saveTList($name, $board_id, $sort))
+            {
+                return response()->json(new TaskinatorApiResult(true, false));
+            } else {
+                return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+            }
+        } catch (Exception $e) {
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
     }
@@ -85,11 +86,10 @@ class TaskinatorListApi extends Controller
         echo "Will unarchive list.\n";
 
         $list = TList::find($request->id);
-        $list->unarchive();
 
         $this->errorMessage = [ 'Unable to restore list '.$list->name.'.' ];
 
-        if ($list->save())
+        if ($list->unarchive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {

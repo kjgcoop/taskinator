@@ -13,18 +13,20 @@ class ApiAuthController extends Controller
 {
 
     public $successStatus = 200;
-    public $errorMessage  = [ 'Unable to log you in.' ];
     public $appName = 'Taskinator';
 
     public function register(Request $request) {
+        $errorMessage  = [ 'Unable to register you.' ];
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
+
         if ($validator->fails()) {
-            return response()->json(new TaskinatorApiResult('', $this->errorMessage), 401);
+            return response()->json(new TaskinatorApiResult('', $errorMessage), 401);
         }
 
         $input = $request->all();
@@ -33,7 +35,7 @@ class ApiAuthController extends Controller
         $user = User::create($input);
 
         $token = $user->createToken($this->appName)->accessToken;
-        return response()->json(new TaskinatorApiResult($token, false), $this->successStatus);
+        return response()->json(new TaskinatorApiResult($token, false));
     }
 
     public function login(){
@@ -41,7 +43,7 @@ class ApiAuthController extends Controller
             $user  = Auth::user();
             $token = $user->createToken($this->appName)->accessToken;
 
-            return response()->json(new TaskinatorApiResult($token, false), $this->successStatus);
+            return response()->json(new TaskinatorApiResult($token, false));
         } else{
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage), 401);
         }
@@ -49,6 +51,6 @@ class ApiAuthController extends Controller
 
     public function getUser() {
         $user = Auth::user();
-        return response()->json(['data' => $user, 'errors' => false], $this->successStatus);
+        return response()->json(['data' => $user, 'errors' => false]);
     }
 }

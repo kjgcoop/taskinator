@@ -11,12 +11,12 @@ class Board extends Model
 
     public function archive() {
         $this->archived = 1;
-        $this->save();
+        return $this->save();
     }
 
     public function edit($name) {
         $this->name = $name;
-        $this->save();
+        return $this->save();
     }
 
     public function lists() {
@@ -25,7 +25,7 @@ class Board extends Model
 
     public function saveBoard($name) {
         $this->name = $name;
-        $this->save();
+        return this->save();
     }
 
     public function show() {
@@ -34,6 +34,6 @@ class Board extends Model
 
     public function unarchive() {
         $this->archived = 0;
-        $this->save();
+        return $this->save();
     }
 }

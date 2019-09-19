@@ -29,15 +29,5 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
-
-
-
-
-    // https://laravel.io/forum/08-29-2016-passport-unauthenticated
-    // Laravel says Carbon doesn't exist
-/*    Passport::tokensExpireIn(Carbon::now()->addDays(7));
-
-    Passport::refreshTokensExpireIn(Carbon::now()->addDays(14));
-*/
     }
 }

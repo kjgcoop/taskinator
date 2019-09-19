@@ -45,7 +45,7 @@ class CreateTaskinatorTables extends Migration
             $table->timestamps();
 
             $table->foreign('board_id')->references('id')->on('boards');
-            $table->index(['board_id', 'sort']);
+            $table->unique(['board_id', 'sort']);
         });
     }
 

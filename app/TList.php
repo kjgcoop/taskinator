@@ -8,7 +8,7 @@ class TList extends Model
 {
     public function archive() {
         $this->archived = 1;
-        $this->save();
+        return $this->save();
     }
 
     public function board() {
@@ -17,14 +17,14 @@ class TList extends Model
 
     public function edit($name) {
         $this->name = $name;
-        $this->save();
+        return $this->save();
     }
 
     public function saveTList($name, $board_id, $sort) {
         $this->name = $name;
         $this->board_id = $board_id;
         $this->sort = $sort;
-        $this->save();
+        return $this->save();
     }
 
     public function show() {
@@ -33,6 +33,6 @@ class TList extends Model
 
     public function unarchive() {
         $this->archived = 0;
-        $this->save();
+        return $this->save();
     }
 }
