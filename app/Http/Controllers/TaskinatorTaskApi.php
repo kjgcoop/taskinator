@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
 use App\TList;
-use App\Board;
 
-class TaskinatorListApi extends Controller
+class TaskinatorTaskApi extends Controller
 {
 
     public function archive(Request $request)
     {
-        $list = TList::find($request->id);
+        $task = Task::find($request->id);
 
-        $this->errorMessage = [ 'Unable to archive list '.$list->name.'.' ];
+        $this->errorMessage = [ 'Unable to archive task '.$task->name.'.' ];
 
-        if ($list->archive())
+        if ($task->archive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -25,15 +25,19 @@ class TaskinatorListApi extends Controller
 
     public function create(Request $request)
     {
-        $this->errorMessage = [ 'Unable to create list '.$request->input('name').'.' ];
+        $this->errorMessage = [ 'Unable to create task '.$request->input('name').'.' ];
 
-        $name = $request->name;
-        $board_id = $request->board_id;
-        $sort = $request->sort;
-        $newList = new TList();
+        $data['name'] = $request->name;
+        $data['sort'] = $request->sort;
+
+        if (isset($request->t_list_id)) {
+            $data['t_list_id'] = $request->t_list_id;
+        }
+
+        $task = new Task();
 
         try {
-            if ($newList->saveTList($name, $board_id, $sort))
+            if ($task->saveTask($data))
             {
                 return response()->json(new TaskinatorApiResult(true, false));
             } else {
@@ -46,13 +50,13 @@ class TaskinatorListApi extends Controller
 
     public function edit(Request $request)
     {
-        $list = TList::find($request->id);
-        $oldName = $list->name;
+        $task = Task::find($request->id);
+        $oldName = $task->name;
 
         $newValues = [];
 
         // They may have sent some or none of the following values:
-        $options = ['name', 'board_id', 'sort'];
+        $options = ['name', 't_list_id', 'sort'];
 
         foreach ($options as $option) {
             if (isset($data[$option])) {
@@ -60,9 +64,9 @@ class TaskinatorListApi extends Controller
             }
         }
 
-        $this->errorMessage = [ 'Unable to edit list '.$oldName.'.' ];
+        $this->errorMessage = [ 'Unable to edit task '.$oldName.'.' ];
 
-        if (count($newValues) === 0 || $list->edit($newValues))
+        if (count($newValues) === 0 || $task->edit($newValues))
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -72,23 +76,23 @@ class TaskinatorListApi extends Controller
 
     public function showAll(Request $request)
     {
-        $this->errorMessage = [ 'Unable to list lists.' ];
+        $this->errorMessage = [ 'Unable to list tasks.' ];
 
         try
         {
-            $lists = Board::find($request->board_id)->tlists;
+            $tasks = TList::find($request->t_list_id)->tasks;
 
-            $lists = $lists->mapWithKeys(function ($item) {
+            $tasks = $tasks->mapWithKeys(function ($item) {
                 return [$item['id'] => $item];
             });
 
         } catch (Exception $e) {
-            $lists = false;
+            $tasks = false;
         }
 
-        if ($lists)
+        if ($tasks)
         {
-            return response()->json(new TaskinatorApiResult($lists, false));
+            return response()->json(new TaskinatorApiResult($tasks, false));
         } else {
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
@@ -96,11 +100,11 @@ class TaskinatorListApi extends Controller
 
     public function unarchive(Request $request)
     {
-        $list = TList::find($request->id);
+        $task = Task::find($request->id);
 
-        $this->errorMessage = [ 'Unable to restore list '.$list->name.'.' ];
+        $this->errorMessage = [ 'Unable to restore task '.$task->name.'.' ];
 
-        if ($list->unarchive())
+        if ($task->unarchive())
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {

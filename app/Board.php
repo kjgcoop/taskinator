@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use app\TList;
 
 class Board extends Model
 {
@@ -19,13 +20,13 @@ class Board extends Model
         return $this->save();
     }
 
-    public function lists() {
-        $this->hasMany('List');
+    public function tlists() {
+        return $this->hasMany('App\TList')->orderBy('sort');
     }
 
     public function saveBoard($name) {
         $this->name = $name;
-        return this->save();
+        return $this->save();
     }
 
     public function show() {

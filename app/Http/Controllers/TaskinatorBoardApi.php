@@ -41,11 +41,10 @@ class TaskinatorBoardApi extends Controller
     {
         $board = Board::find($request->id);
         $oldName = $board->name;
-        $board->name = $request->name;
 
         $this->errorMessage = [ 'Unable to edit board '.$oldName.'.' ];
 
-        if ($board->save())
+        if ($board->edit($request->name))
         {
             return response()->json(new TaskinatorApiResult(true, false));
         } else {
@@ -59,7 +58,14 @@ class TaskinatorBoardApi extends Controller
 
         try
         {
-            $boards = Board::all();
+            // Get all the values
+            $boards = Board::orderBy('name')->get();
+
+            // Smash down to id => name
+            $boards = $boards->mapWithKeys(function ($item) {
+                return [$item['id'] => $item['name']];
+            });
+
         } catch (Exception $e) {
             $boards = false;
         }

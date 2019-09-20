@@ -54,13 +54,14 @@ class CreateTaskinatorTables extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
-            $table->bigInteger('list_id')->unsigned();
+            $table->bigInteger('t_list_id')->unsigned()->nullable();
             $table->unsignedInteger('sort')->nullable();
 
             $table->boolean('archived')->default(0);
             $table->timestamps();
 
-            $table->foreign('list_id')->references('id')->on('t_lists')->nullable();
+//            $table->foreign('t_list_id')->references('id')->on('t_lists')->nullable();
+            $table->unique(['t_list_id', 'sort']);
         });
     }
 

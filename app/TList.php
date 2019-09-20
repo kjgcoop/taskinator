@@ -12,11 +12,18 @@ class TList extends Model
     }
 
     public function board() {
-        $this->hasOne('Board');
+        return $this->hasOne('App\Board');
     }
 
-    public function edit($name) {
-        $this->name = $name;
+    public function edit($data) {
+        $options = ['name', 'board_id', 'sort'];
+
+        foreach ($options as $option) {
+            if (isset($data[$option])) {
+                $this->$option = $data[$option];
+            }
+        }
+
         return $this->save();
     }
 
@@ -29,6 +36,10 @@ class TList extends Model
 
     public function show() {
         // Requires lists, tasks and tags.
+    }
+
+    public function tasks() {
+        return $this->hasMany('App\Task')->orderBy('sort');
     }
 
     public function unarchive() {

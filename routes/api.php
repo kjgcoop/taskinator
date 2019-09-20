@@ -34,10 +34,17 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:api')->match(['get', 'post'], '/show-lists',  'TaskinatorListApi@showAll');
 
     Route::middleware('auth:api')->match(['get', 'post'], '/create-list',  'TaskinatorListApi@create');     // C
-    Route::middleware('auth:api')->match(['get', 'post'], '/show-list',  'TaskinatorListApi@show');         // R - requires tasks and tags
-    Route::middleware('auth:api')->match(['get', 'post'], '/show-list',  'TaskinatorListApi@create');       // U
+//    Route::middleware('auth:api')->match(['get', 'post'], '/show-list',  'TaskinatorListApi@show');       // R - requires tasks and tags
+    Route::middleware('auth:api')->match(['get', 'post'], '/edit-list',  'TaskinatorListApi@edit');         // U
     Route::middleware('auth:api')->match(['get', 'post'], '/archive-list',  'TaskinatorListApi@archive');   // D
     Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-list',  'TaskinatorListApi@unarchive');
 
-});
+    // Tasks
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-tasks',  'TaskinatorTaskApi@showAll');
 
+    Route::middleware('auth:api')->match(['get', 'post'], '/create-task',  'TaskinatorTaskApi@create');     // C
+//    Route::middleware('auth:api')->match(['get', 'post'], '/show-task',  'TaskinatorTaskApi@show');       // R - requires tags
+    Route::middleware('auth:api')->match(['get', 'post'], '/edit-list',  'TaskinatorTaskApi@edit');         // U
+    Route::middleware('auth:api')->match(['get', 'post'], '/archive-task',  'TaskinatorTaskApi@archive');   // D
+    Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-task',  'TaskinatorTaskApi@unarchive');
+});
