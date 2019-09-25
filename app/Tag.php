@@ -49,8 +49,6 @@ class Tag extends Model
 
     public function showTasks() {
         return $this->tasks;
-  //      print_r($this->tasks());
-//        die();
     }
 
     public function tasks() {
