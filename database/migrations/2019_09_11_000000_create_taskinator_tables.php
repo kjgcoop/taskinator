@@ -19,7 +19,7 @@ class CreateTaskinatorTables extends Migration
         $this->createColorsTable();
         $this->createTagsTable();
 
-        $this->createTaskTagTable();
+        $this->createTagTaskTable();
     }
 
     private function createBoardsTable() {
@@ -80,10 +80,8 @@ class CreateTaskinatorTables extends Migration
         });
     }
 
-    private function createTaskTagTable() {
-        Schema::create('task_tag', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
+    private function createTagTaskTable() {
+        Schema::create('tag_Task', function (Blueprint $table) {
             $table->bigInteger('task_id')->unsigned();
             $table->bigInteger('tag_id')->unsigned();
 

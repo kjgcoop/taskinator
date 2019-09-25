@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use app\TList;
+use app\Tag;
 
 class Task extends Model
 {
@@ -12,7 +13,20 @@ class Task extends Model
 
     public function archive() {
         $this->archived = 1;
-        return $this->save();
+
+        try {
+            return $this->save();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function assignTag($tag_id) {
+        try {
+            return $this->tags()->attach($tag_id);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function edit($data) {
@@ -23,7 +37,11 @@ class Task extends Model
             $this->t_list_id = $data['t_list_id'];
         }
 
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function saveTask($data) {
@@ -34,11 +52,19 @@ class Task extends Model
             $this->t_list_id = $data['t_list_id'];
         }
 
-        return $this->save();
+        try {
+            return $this->save();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function show() {
         // Requires tags.
+    }
+
+    public function tags() {
+        return $this->belongsToMany('App\Tag');
     }
 
     public function t_list() {
@@ -47,6 +73,20 @@ class Task extends Model
 
     public function unarchive() {
         $this->archived = 0;
-        return $this->save();
+
+        try {
+            return $this->save();
+        } catch (Exception $e) {
+            return false;
+        }
     }
+
+    public function unassignTag($tag_id) {
+        try {
+            return $this->tags()->detach($tag_id);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 }

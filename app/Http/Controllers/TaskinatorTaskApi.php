@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Task;
 use App\TList;
+use App\Task;
+use App\Tag;
 
 class TaskinatorTaskApi extends Controller
 {
@@ -22,6 +23,23 @@ class TaskinatorTaskApi extends Controller
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
     }
+
+    public function assignTag(Request $request)
+    {
+        $task = Task::find($request->task_id);
+        $tag = Tag::find($request->tag_id);
+
+        $this->errorMessage = [ 'Unable to assign tag '.$tag->name.' to task '.$task->name.'.' ];
+
+        if ($task->assignTag($request->tag_id))
+        {
+            return response()->json(new TaskinatorApiResult(true, false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
+
 
     public function create(Request $request)
     {
@@ -111,4 +129,20 @@ class TaskinatorTaskApi extends Controller
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
     }
+
+    public function unassignTag(Request $request)
+    {
+        $task = Task::find($request->task_id);
+        $tag = Tag::find($request->tag_id);
+
+        $this->errorMessage = [ 'Unable to unassign tag '.$tag->name.' to task '.$task->name.'.' ];
+
+        if ($task->unassignTag($request->tag_id))
+        {
+            return response()->json(new TaskinatorApiResult(true, false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
 }

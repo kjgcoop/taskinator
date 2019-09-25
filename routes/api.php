@@ -47,4 +47,21 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:api')->match(['get', 'post'], '/edit-list',  'TaskinatorTaskApi@edit');         // U
     Route::middleware('auth:api')->match(['get', 'post'], '/archive-task',  'TaskinatorTaskApi@archive');   // D
     Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-task',  'TaskinatorTaskApi@unarchive');
+
+    // Tags
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-tags',  'TaskinatorTagApi@showAll');
+
+    Route::middleware('auth:api')->match(['get', 'post'], '/create-tag',  'TaskinatorTagApi@create');        // C
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-tag',  'TaskinatorTagApi@show');            // R
+    Route::middleware('auth:api')->match(['get', 'post'], '/edit-tag',  'TaskinatorTagApi@edit');            // U
+    Route::middleware('auth:api')->match(['get', 'post'], '/archive-tag',  'TaskinatorTagApi@archive');      // D
+    Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-tag',  'TaskinatorTagApi@unarchive');
+
+
+    // Task-tag relationships - note these are in the task controller, not the tag
+    Route::middleware('auth:api')->match(['get', 'post'], '/assign-tag-task',  'TaskinatorTaskApi@assignTag');
+    Route::middleware('auth:api')->match(['get', 'post'], '/unassign-tag-task',  'TaskinatorTaskApi@unassignTag');
+
+    // Show all the tasks in a tag
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-tag-tasks',  'TaskinatorTagApi@showTasks');
 });
