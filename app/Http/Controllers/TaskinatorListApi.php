@@ -70,6 +70,26 @@ class TaskinatorListApi extends Controller
         }
     }
 
+    public function show(Request $request)
+    {
+        $this->errorMessage = [ 'Unable to show list.' ];
+
+        try
+        {
+            $list = TList::find($request->list_id);
+
+        } catch (Exception $e) {
+            $list = false;
+        }
+
+        if ($list)
+        {
+            return response()->json(new TaskinatorApiResult($list, false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
     public function showAll(Request $request)
     {
         $this->errorMessage = [ 'Unable to list lists.' ];

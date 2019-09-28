@@ -81,7 +81,7 @@ class CreateTaskinatorTables extends Migration
     }
 
     private function createTagTaskTable() {
-        Schema::create('tag_Task', function (Blueprint $table) {
+        Schema::create('tag_task', function (Blueprint $table) {
             $table->bigInteger('task_id')->unsigned();
             $table->bigInteger('tag_id')->unsigned();
 
@@ -116,13 +116,17 @@ class CreateTaskinatorTables extends Migration
      */
     public function down()
     {
-        // Drop in this order to avoid foreign key contstraints
-        Schema::dropIfExists('task_tag');
-        Schema::dropIfExists('tags');
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('tag_task');
 
         Schema::dropIfExists('tasks');
         Schema::dropIfExists('t_lists');
         Schema::dropIfExists('boards');
+
+
+        Schema::dropIfExists('tags');
+
+        Schema::dropIfExists('colors');
+
+
     }
 }

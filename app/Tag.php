@@ -46,7 +46,6 @@ class Tag extends Model
         return $this;
     }
 
-
     public function showTasks() {
         return $this->tasks;
     }

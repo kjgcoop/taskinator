@@ -35,7 +35,11 @@ class TList extends Model
     }
 
     public function show() {
-        // Requires lists, tasks and tags.
+        $this->load(['tasks' => function ($query) {
+//            $query->orderBy('published_date', 'asc');
+        }]);
+        return $this;
+
     }
 
     public function tasks() {

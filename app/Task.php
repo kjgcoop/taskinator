@@ -60,7 +60,10 @@ class Task extends Model
     }
 
     public function show() {
-        // Requires tags.
+        $this->load(['tags' => function ($query) {
+//            $query->orderBy('published_date', 'asc');
+        }]);
+        return $this;
     }
 
     public function tags() {

@@ -92,6 +92,33 @@ class TaskinatorTaskApi extends Controller
         }
     }
 
+    public function show(Request $request)
+    {
+
+
+        $this->errorMessage = [ 'Unable to list tasks.' ];
+
+        try
+        {
+            $task = Task::find($request->id);
+
+            // Improve the error message
+            $this->errorMessage = [ 'Unable to show task '.$task->name.'.' ];
+
+        } catch (Exception $e) {
+            $task = false;
+        }
+
+        if ($task->show())
+        {
+            return response()->json(new TaskinatorApiResult($task, false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
+
+
     public function showAll(Request $request)
     {
         $this->errorMessage = [ 'Unable to list tasks.' ];
@@ -115,6 +142,33 @@ class TaskinatorTaskApi extends Controller
             return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
         }
     }
+
+
+    public function showAllUnaffiliated(Request $request)
+    {
+        $this->errorMessage = [ 'Unable to list unaffiliated tasks.' ];
+
+        try
+        {
+            $tasks = Task::where('t_list_id', 0)->get();
+
+            $tasks = $tasks->mapWithKeys(function ($item) {
+                return [$item['id'] => $item];
+            });
+
+        } catch (Exception $e) {
+            $tasks = false;
+        }
+
+        if ($tasks)
+        {
+            return response()->json(new TaskinatorApiResult($tasks, false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
+
 
     public function unarchive(Request $request)
     {
