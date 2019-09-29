@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:api')->match(['get', 'post'], '/show-boards',  'TaskinatorBoardApi@showAll');
 
     Route::middleware('auth:api')->match(['get', 'post'], '/create-board',  'TaskinatorBoardApi@create');   // C
-//    Route::middleware('auth:api')->match(['get', 'post'], '/show-board',  'TaskinatorBoardApi@show');     // R - requires lists, tasks and tags.
+    Route::middleware('auth:api')->match(['get', 'post'], '/show-board',  'TaskinatorBoardApi@show');       // R - requires lists, tasks and tags.
     Route::middleware('auth:api')->match(['get', 'post'], '/edit-board',  'TaskinatorBoardApi@edit');       // U
     Route::middleware('auth:api')->match(['get', 'post'], '/archive-board',  'TaskinatorBoardApi@archive'); // D
     Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-board',  'TaskinatorBoardApi@unarchive');
@@ -44,7 +44,7 @@ Route::prefix('v1')->group(function(){
 
     Route::middleware('auth:api')->match(['get', 'post'], '/create-task',  'TaskinatorTaskApi@create');     // C
     Route::middleware('auth:api')->match(['get', 'post'], '/show-task',  'TaskinatorTaskApi@show');         // R - requires tags
-    Route::middleware('auth:api')->match(['get', 'post'], '/edit-list',  'TaskinatorTaskApi@edit');         // U
+    Route::middleware('auth:api')->match(['get', 'post'], '/edit-task',  'TaskinatorTaskApi@edit');         // U
     Route::middleware('auth:api')->match(['get', 'post'], '/archive-task',  'TaskinatorTaskApi@archive');   // D
     Route::middleware('auth:api')->match(['get', 'post'], '/unarchive-task',  'TaskinatorTaskApi@unarchive');
 

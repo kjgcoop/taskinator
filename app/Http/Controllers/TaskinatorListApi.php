@@ -46,8 +46,12 @@ class TaskinatorListApi extends Controller
 
     public function edit(Request $request)
     {
+//        echo "List ID: {$request->id}\n";
+//        die();
+
         $list = TList::find($request->id);
         $oldName = $list->name;
+        $this->errorMessage = [ 'Unable to edit list '.$oldName.'.' ];
 
         $newValues = [];
 
@@ -55,12 +59,10 @@ class TaskinatorListApi extends Controller
         $options = ['name', 'board_id', 'sort'];
 
         foreach ($options as $option) {
-            if (isset($data[$option])) {
-                $newValues[$option] = $data[$option];
+            if (isset($request->$option)) {
+                $newValues[$option] = $request->$option;
             }
         }
-
-        $this->errorMessage = [ 'Unable to edit list '.$oldName.'.' ];
 
         if (count($newValues) === 0 || $list->edit($newValues))
         {
@@ -72,12 +74,13 @@ class TaskinatorListApi extends Controller
 
     public function show(Request $request)
     {
+//        die('Looking for list '.$request->id);
+
         $this->errorMessage = [ 'Unable to show list.' ];
 
         try
         {
-            $list = TList::find($request->list_id);
-
+            $list = TList::find($request->id);
         } catch (Exception $e) {
             $list = false;
         }
@@ -101,6 +104,15 @@ class TaskinatorListApi extends Controller
             $lists = $lists->mapWithKeys(function ($item) {
                 return [$item['id'] => $item];
             });
+
+            $lists->load(['tasks' => function ($query) {
+                $query->orderBy('sort', 'asc');
+            }]);
+
+            $lists->load(['tasks.tags' => function ($query) {
+//                $query->orderBy('sort', 'asc');
+            }]);
+
 
         } catch (Exception $e) {
             $lists = false;

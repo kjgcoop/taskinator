@@ -30,11 +30,12 @@ class Task extends Model
     }
 
     public function edit($data) {
-        $this->name = $data['name'];
-        $this->sort = $data['sort'];
+        $options = ['name', 't_list_id', 'sort'];
 
-        if (isset($data['t_list_id'])) {
-            $this->t_list_id = $data['t_list_id'];
+        foreach ($options as $option) {
+            if (isset($data[$option])) {
+                $this->$option = $data[$option];
+            }
         }
 
         try {
@@ -61,7 +62,7 @@ class Task extends Model
 
     public function show() {
         $this->load(['tags' => function ($query) {
-//            $query->orderBy('published_date', 'asc');
+            $query->orderBy('name', 'asc');
         }]);
         return $this;
     }

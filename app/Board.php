@@ -7,6 +7,10 @@ use app\TList;
 
 class Board extends Model
 {
+//    protected $with = ['tlists', 'tlists.tasks', 'tasks.tags'];
+    protected $with = ['tlists'];
+
+
     public function __construct() {
     }
 
@@ -31,6 +35,8 @@ class Board extends Model
 
     public function show() {
         // Requires lists, tasks and tags.
+        return $this;
+
     }
 
     public function unarchive() {

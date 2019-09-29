@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TList extends Model
 {
+    protected $with = ['tasks', 'tasks.tags'];
+
     public function archive() {
         $this->archived = 1;
         return $this->save();
@@ -35,11 +37,7 @@ class TList extends Model
     }
 
     public function show() {
-        $this->load(['tasks' => function ($query) {
-//            $query->orderBy('published_date', 'asc');
-        }]);
         return $this;
-
     }
 
     public function tasks() {

@@ -52,6 +52,21 @@ class TaskinatorBoardApi extends Controller
         }
     }
 
+    public function show(Request $request)
+    {
+        $board = Board::find($request->id);
+
+        $this->errorMessage = [ 'Unable to show board '.$board->name.'.' ];
+
+        if ($board->show())
+        {
+            return response()->json(new TaskinatorApiResult($board->show(), false));
+        } else {
+            return response()->json(new TaskinatorApiResult(false, $this->errorMessage));
+        }
+    }
+
+
     public function showAll()
     {
         $this->errorMessage = [ 'Unable to list boards.' ];

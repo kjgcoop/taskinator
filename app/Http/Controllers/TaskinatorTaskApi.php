@@ -70,6 +70,7 @@ class TaskinatorTaskApi extends Controller
     {
         $task = Task::find($request->id);
         $oldName = $task->name;
+        $this->errorMessage = [ 'Unable to edit task '.$oldName.'.' ];
 
         $newValues = [];
 
@@ -77,12 +78,10 @@ class TaskinatorTaskApi extends Controller
         $options = ['name', 't_list_id', 'sort'];
 
         foreach ($options as $option) {
-            if (isset($data[$option])) {
-                $newValues[$option] = $data[$option];
+            if (isset($request->$option)) {
+                $newValues[$option] = $request->$option;
             }
         }
-
-        $this->errorMessage = [ 'Unable to edit task '.$oldName.'.' ];
 
         if (count($newValues) === 0 || $task->edit($newValues))
         {
@@ -94,7 +93,6 @@ class TaskinatorTaskApi extends Controller
 
     public function show(Request $request)
     {
-
 
         $this->errorMessage = [ 'Unable to list tasks.' ];
 
@@ -130,6 +128,10 @@ class TaskinatorTaskApi extends Controller
             $tasks = $tasks->mapWithKeys(function ($item) {
                 return [$item['id'] => $item];
             });
+
+            $tasks->load(['tags' => function ($query) {
+                $query->orderBy('name', 'asc');
+            }]);
 
         } catch (Exception $e) {
             $tasks = false;
