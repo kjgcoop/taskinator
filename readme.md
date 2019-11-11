@@ -20,3 +20,4 @@ When Phase One is complete, it will have the following:
     3. The ability to see all unaffiliated tasks
 
 
+As of this writing, it's only API. The APIs exist to power all of the above, but there is no UI.
