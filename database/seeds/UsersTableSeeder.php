@@ -13,8 +13,8 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => 'KJ',
-            'email' => 'laravel@kjcoop.com',
+            'name' => 'Someone Special',
+            'email' => 'you@you.you',
             'password' => 'password',
         ];
 
